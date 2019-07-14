@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VT.WebApi", "VT.WebApi\VT.WebApi.csproj", "{54E29D9F-27EC-431A-8651-5ED2ADC13965}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VT.Service", "VT.Service\VT.Service.csproj", "{4FAB5254-5B4B-4975-961F-814C2BD49079}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VT.Data", "VT.Data\VT.Data.csproj", "{509ECDC5-097C-43B1-9C8B-762412CD52C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54E29D9F-27EC-431A-8651-5ED2ADC13965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E29D9F-27EC-431A-8651-5ED2ADC13965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E29D9F-27EC-431A-8651-5ED2ADC13965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E29D9F-27EC-431A-8651-5ED2ADC13965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FAB5254-5B4B-4975-961F-814C2BD49079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FAB5254-5B4B-4975-961F-814C2BD49079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FAB5254-5B4B-4975-961F-814C2BD49079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FAB5254-5B4B-4975-961F-814C2BD49079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{509ECDC5-097C-43B1-9C8B-762412CD52C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{509ECDC5-097C-43B1-9C8B-762412CD52C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{509ECDC5-097C-43B1-9C8B-762412CD52C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{509ECDC5-097C-43B1-9C8B-762412CD52C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE97370F-EA07-4F2E-A416-BFBDDD54113A}
+	EndGlobalSection
+EndGlobal
