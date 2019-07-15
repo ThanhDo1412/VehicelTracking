@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VT.Data.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class initVehicleContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,12 +58,10 @@ namespace VT.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     VehicleNumber = table.Column<string>(nullable: true),
-                    CurrentLat = table.Column<decimal>(nullable: false),
-                    CurrentLon = table.Column<decimal>(nullable: false),
-                    CurrentTime = table.Column<DateTime>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

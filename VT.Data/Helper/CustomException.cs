@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using VT.Data.CommonData;
 
 namespace VT.Data.Helper
@@ -11,6 +13,12 @@ namespace VT.Data.Helper
         {
             ErrorCode = error.ToString();
             ErrorMessage = error.GetDisplayAttribute().Name;
+        }
+
+        public CustomException(ErrorCode error, params object[] values)
+        {
+            ErrorCode = error.ToString();
+            ErrorMessage = string.Format(error.GetDisplayAttribute().Name, values);
         }
     }
 }

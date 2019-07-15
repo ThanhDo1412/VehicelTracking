@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VT.Data\VT.Data.csproj" />
+    <ProjectReference Include="..\VT.Service\VT.Service.csproj" />
   </ItemGroup>
 
 </Project>

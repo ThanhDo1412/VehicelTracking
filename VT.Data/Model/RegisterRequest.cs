@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VT.Data.ViewModel
+﻿namespace VT.Data.Model
 {
-    public class RegisterViewModel
+    public class RegisterRequest
     {
         public string UserName { get; set; }
         public string Email { get; set; }

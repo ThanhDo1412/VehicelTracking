@@ -12,7 +12,10 @@ using VT.Data.Vehicle;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using VT.Data;
+using VT.Data.Repository;
 using VT.Data.TrackingHistory;
+using VT.Service;
+using VT.Service.Interface;
 using VT.WebApi.Middleware;
 
 namespace VT.WebApi
@@ -40,11 +43,20 @@ namespace VT.WebApi
             services.AddIdentity<User, IdentityRole<Guid>>(cfg =>
                 {
                     cfg.User.RequireUniqueEmail = true;
+                    cfg.Password.RequireDigit = true;
+                    cfg.Password.RequiredLength = 5;
+                    cfg.Password.RequireUppercase = false;
+                    cfg.Password.RequireLowercase = false;
+                    cfg.Password.RequireNonAlphanumeric = false;
+                    cfg.Password.RequiredUniqueChars = 0;
                 })
                 .AddEntityFrameworkStores<VehicleContext>();
 
-            //services.AddScoped<ITransactionService, TransactionService>();
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAccountService, AccountSerivce>();
+            services.AddTransient<IVehicleService, VehicleService>();
+
+            services.AddScoped(typeof(IReponsitory<>), typeof(VehicleRepository<>));
+            services.AddScoped(typeof(IReponsitory<>), typeof(TrackingHistoryRepository<>));
 
             //Configuration for token 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

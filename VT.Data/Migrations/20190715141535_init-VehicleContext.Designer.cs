@@ -10,8 +10,8 @@ using VT.Data.Vehicle;
 namespace VT.Data.Migrations
 {
     [DbContext(typeof(VehicleContext))]
-    [Migration("20190714081833_init-database")]
-    partial class initdatabase
+    [Migration("20190715141535_init-VehicleContext")]
+    partial class initVehicleContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -213,11 +213,7 @@ namespace VT.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<decimal>("CurrentLat");
-
-                    b.Property<decimal>("CurrentLon");
-
-                    b.Property<DateTime>("CurrentTime");
+                    b.Property<bool>("IsActive");
 
                     b.Property<DateTime?>("UpdatedDate");
 

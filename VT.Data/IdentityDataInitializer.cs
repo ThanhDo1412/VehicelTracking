@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using VT.Data.Vehicle;
 
 namespace VT.Data
@@ -16,7 +14,7 @@ namespace VT.Data
             foreach (var role in initRole)
             {
                 var isExisted = await roleManager.RoleExistsAsync(role);
-                if (isExisted)
+                if (!isExisted)
                 {
                     await roleManager.CreateAsync(new IdentityRole<Guid>(role));
                 }
@@ -26,27 +24,29 @@ namespace VT.Data
             var user = await userManager.FindByEmailAsync("vehicle1@test.com");
             if (user == null)
             {
-                await userManager.CreateAsync(new User()
+                user = new User()
                 {
                     UserName = "Vehicle1",
                     Email = "vehicle1@test.com"
-                }, "123");
+                };
+                await userManager.CreateAsync(user, "12345");
             }
 
             await userManager.AddToRoleAsync(user, "User");
 
             //Add Admin
-            var adim = await userManager.FindByEmailAsync("admin@test.com");
-            if (adim == null)
+            var admin = await userManager.FindByEmailAsync("admin@test.com");
+            if (admin == null)
             {
-                await userManager.CreateAsync(new User()
+                admin = new User()
                 {
-                    UserName = "Vehicle Admin",
+                    UserName = "Admin1",
                     Email = "admin@test.com"
-                }, "12345abc");
+                };
+                await userManager.CreateAsync(admin, "12345abc");
             }
 
-            await userManager.AddToRoleAsync(adim, "Admin");
+            await userManager.AddToRoleAsync(admin, "Admin");
         }
     }
 }

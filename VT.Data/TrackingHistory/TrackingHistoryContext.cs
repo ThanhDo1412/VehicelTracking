@@ -9,5 +9,6 @@ namespace VT.Data.TrackingHistory
         { }
 
         public DbSet<TrackingHistory> TrackingHistories { get; set; }
+        public DbSet<TrackingSession> TrackingSessions { get; set; }
     }
 }

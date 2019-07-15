@@ -211,11 +211,7 @@ namespace VT.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<decimal>("CurrentLat");
-
-                    b.Property<decimal>("CurrentLon");
-
-                    b.Property<DateTime>("CurrentTime");
+                    b.Property<bool>("IsActive");
 
                     b.Property<DateTime?>("UpdatedDate");
 

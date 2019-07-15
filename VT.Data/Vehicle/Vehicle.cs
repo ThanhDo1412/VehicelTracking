@@ -4,12 +4,12 @@ using System.Text;
 
 namespace VT.Data.Vehicle
 {
-    public class Vehicle : BaseEntity
+    public class Vehicle
     {
         public Guid Id { get; set; }
-        public String VehicleNumber { get; set; }
-        public decimal CurrentLat { get; set; }
-        public decimal CurrentLon { get; set; }
-        public DateTime CurrentTime { get; set; }
+        public string VehicleNumber { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }
