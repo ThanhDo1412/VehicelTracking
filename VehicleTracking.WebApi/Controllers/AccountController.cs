@@ -23,6 +23,7 @@ namespace VehicleTracking.WebApi.Controllers
         [Route("api/Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
+            login.Validate();
             var response = await _accountService.LogIn(login);
             return Ok(response);
         }
@@ -31,6 +32,7 @@ namespace VehicleTracking.WebApi.Controllers
         [Route("api/Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest resigerInfo)
         {
+            resigerInfo.Validate();
             var response = await _accountService.Register(resigerInfo);
             return Ok(response);
         }

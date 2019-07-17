@@ -28,7 +28,7 @@ namespace VehicleTracking.Service
             //Vehicle already existed
             if (vehicle != null)
             {
-                if (vehicle.IsActive) throw new DuplicateVehicleException(ErrorCode.E004, model.VehicleNumber);
+                if (vehicle.IsActive) throw new DuplicateVehicleException(ErrorCode.E101, model.VehicleNumber);
 
                 vehicle.IsActive = true;
                 vehicle.UpdatedDate = DateTime.UtcNow;
@@ -53,7 +53,7 @@ namespace VehicleTracking.Service
         public async Task RemoveVehicle(string vehicleNumber)
         {
             var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == vehicleNumber && x.IsActive);
-            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E005, vehicleNumber);
+            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, vehicleNumber);
 
             vehicle.IsActive = false;
             vehicle.UpdatedDate = DateTime.UtcNow;

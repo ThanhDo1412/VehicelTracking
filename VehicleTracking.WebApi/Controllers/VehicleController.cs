@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VehicleTracking.Data.Vehicle;
+using System.Threading.Tasks;
+using VehicleTracking.Data.CommonData;
+using VehicleTracking.Data.Exceptions;
 using VehicleTracking.Data.Model;
 using VehicleTracking.Service.Interface;
 
@@ -27,6 +23,7 @@ namespace VehicleTracking.WebApi.Controllers
         [Route("api/vehicle")]
         public async Task<IActionResult> AddVehicle([FromBody] VehicleRequest model)
         {
+            model.Validate();
             await _vehicleService.AddVehicle(model);
             return Ok();
         }
@@ -35,6 +32,10 @@ namespace VehicleTracking.WebApi.Controllers
         [Route("api/vehicle")]
         public async Task<IActionResult> RemoveVehicle([FromBody] string vehicleNumber)
         {
+            if (string.IsNullOrWhiteSpace(vehicleNumber))
+            {
+                throw new VehicleInvalidException(ErrorCode.E105);
+            }
             await _vehicleService.RemoveVehicle(vehicleNumber);
             return Ok();
         }

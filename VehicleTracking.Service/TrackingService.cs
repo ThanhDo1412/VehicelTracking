@@ -28,7 +28,7 @@ namespace VehicleTracking.Service
         public async Task UpdateLocation(VehicleLocationRequest model)
         {
             var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
-            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E005, model.VehicleNumber);
+            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, model.VehicleNumber);
 
             //Check session was created or not
             var session = await _trackingSessionRepository.FindOneByConditionAsync(x =>
@@ -61,16 +61,16 @@ namespace VehicleTracking.Service
         public async Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber)
         {
             var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == vehicleNumber && x.IsActive);
-            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E005, vehicleNumber);
+            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, vehicleNumber);
 
             //Get latest session
             var session = (await _trackingSessionRepository.FindByConditionAsync(x => x.VehicleId == vehicle.Id))
                 .OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-            if (session == null) throw new LocationNotFoundException(ErrorCode.E006, vehicleNumber);
+            if (session == null) throw new LocationNotFoundException(ErrorCode.E103, vehicleNumber);
 
             //Get latest position depend on this session
             var location = session.TrackingHistories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-            if (location == null) throw new LocationNotFoundException(ErrorCode.E006, vehicleNumber);
+            if (location == null) throw new LocationNotFoundException(ErrorCode.E103, vehicleNumber);
 
             return new VehicleLocationResponse()
             {
@@ -84,14 +84,14 @@ namespace VehicleTracking.Service
         public async Task<VehicleJourneyResponse> GetVehicleJourney(VehicleJourneyRequest model)
         {
             var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
-            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E005, model.VehicleNumber);
+            if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, model.VehicleNumber);
 
             //Get sessions
             var sessions = await _trackingSessionRepository.FindByConditionAsync(x =>
                 x.VehicleId == vehicle.Id
                 && x.CreatedDate >= model.From
                 && x.CreatedDate <= model.To);
-            if (!sessions.Any()) throw new JourneyNotFoundException(ErrorCode.E007, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
+            if (!sessions.Any()) throw new JourneyNotFoundException(ErrorCode.E104, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
 
             //Get latest position depend on this session
             var locations = new List<LocationBase>();
@@ -107,7 +107,7 @@ namespace VehicleTracking.Service
                     });
                 locations.AddRange(listLocation);
             }
-            if (!locations.Any()) throw new JourneyNotFoundException(ErrorCode.E007, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
+            if (!locations.Any()) throw new JourneyNotFoundException(ErrorCode.E104, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
 
             return new VehicleJourneyResponse()
             {
