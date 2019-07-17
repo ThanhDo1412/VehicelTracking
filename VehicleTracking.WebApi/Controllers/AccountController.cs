@@ -20,6 +20,7 @@ namespace VehicleTracking.WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
         [Route("api/Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
@@ -29,6 +30,7 @@ namespace VehicleTracking.WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
         [Route("api/Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest resigerInfo)
         {

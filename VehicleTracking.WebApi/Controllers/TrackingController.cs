@@ -43,8 +43,8 @@ namespace VehicleTracking.WebApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("api/tracking/journey/{vehicleNumber}")]
-        public async Task<IActionResult> GetJourney([FromBody] VehicleJourneyRequest model)
+        [Route("api/tracking/journey/{vehicleNumber}/{from}/{to}")]
+        public async Task<IActionResult> GetJourney(VehicleJourneyRequest model)
         {
             model.Validate();
             var result = await _trackingService.GetVehicleJourney(model);
