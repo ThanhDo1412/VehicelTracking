@@ -1,16 +1,15 @@
 # Vehicle Tracking
 
-1. Description  
+## Description
 This is the BackEnd platform of vehicle tracking. It's used for update current location, get current location and journey of vehicle in period time
 
-2. Technical applied
+## Technical applied
 - Asp .Net Core web API
 - Identity4 for .Net Core
 - Repository patten
 - Entity framework Code first
 
-3. How to run
-
+## How to run
 Firstly, please download project and open cmnd in this folder. Please check connectionstring before execute commands to initalize database as below: 
 ```
 dotnet ef database update -c VehicleContext -p VehicleTracking.WebApi
@@ -27,8 +26,7 @@ dotnet run --project ./VehicleTracking.WebApi/VehicleTracking.WebApi.csproj
 ```
   Finally, project is working. Enjoy it.
 
-4. API list
-
+## API list
 Login API
 ```
 Method: POST
@@ -98,22 +96,20 @@ Response:
     LatestUpdate
   }
 ```
-5. Database Structure
-
-  I had 2 database: Vehicle and trackingHistory
-  
+## Database Structure
+I had 2 database: Vehicle and trackingHistory  
   - For Vehicle database: it's used for management data of system and identity user
   - For TrackingHistory database: this database is used for tracking location of all vehicles. TrackingSessions table which will create 
   new record per day for each vehicle, is index of each vehicle by date. When we want to find a journey of vehicle in period time, 
   TrackingSessions like a filter that will be reduce the reading time and boost up the query so much than query directly in 
   TrackingHistories. This database will be easy for scaling and relication without touch in to identity and orther datas.
   
-6. Testing user  
+## Testing user  
   For testing purpose, I created 2 user:
   - Admin: admin@test.com/12345abc
   - Vehicle User: vehicle1@test.com/12345
   
- 7. Future plane to improve
+## Future plane to improve
   - Writing UT
   - Apply Swagger for API Doc
   - Add/Edit more informations for User, Role, Vehicle
