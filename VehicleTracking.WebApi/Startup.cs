@@ -14,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using VehicleTracking.Data;
 using VehicleTracking.Data.Repository;
 using VehicleTracking.Data.TrackingHistory;
+using VehicleTracking.Gateway.GoogleGateway;
+using VehicleTracking.GateWay.GoogleGateway;
 using VehicleTracking.Service;
 using VehicleTracking.Service.Interface;
 using VehicleTracking.WebApi.Middleware;
@@ -55,6 +57,7 @@ namespace VehicleTracking.WebApi
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IVehicleService, VehicleService>();
             services.AddTransient<ITrackingService, TrackingService>();
+            services.AddTransient<IGeoCodingService, GeoCodingService>();
 
             services.AddScoped(typeof(IReponsitory<>), typeof(VehicleRepository<>));
             services.AddScoped(typeof(IReponsitory<>), typeof(TrackingHistoryRepository<>));

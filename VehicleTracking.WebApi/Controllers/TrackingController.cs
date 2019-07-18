@@ -31,13 +31,13 @@ namespace VehicleTracking.WebApi.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("api/tracking/current/{vehicleNumber}")]
-        public async Task<IActionResult> GetLocation(string vehicleNumber)
+        public async Task<IActionResult> GetLocation(string vehicleNumber, bool isGetAddress = false)
         {
             if (string.IsNullOrWhiteSpace(vehicleNumber))
             {
                 throw new VehicleInvalidException(ErrorCode.E105);
             }
-            var result = await _trackingService.GetCurrentLocation(vehicleNumber);
+            var result = await _trackingService.GetCurrentLocation(vehicleNumber, isGetAddress);
             return Ok(result);
         }
 

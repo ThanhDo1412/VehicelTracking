@@ -8,6 +8,7 @@ using VehicleTracking.Data.Model;
 using VehicleTracking.Data.Repository;
 using VehicleTracking.Data.TrackingHistory;
 using VehicleTracking.Data.Vehicle;
+using VehicleTracking.GateWay.GoogleGateway;
 using VehicleTracking.Service.Interface;
 
 namespace VehicleTracking.Service
@@ -17,12 +18,14 @@ namespace VehicleTracking.Service
         private readonly TrackingHistoryRepository<TrackingHistory> _trackingHistoryRepository;
         private readonly TrackingHistoryRepository<TrackingSession> _trackingSessionRepository;
         private readonly VehicleRepository<Vehicle> _vehicleRepository;
+        private readonly IGeoCodingService _geoCodingService;
 
-        public TrackingService(TrackingHistoryRepository<TrackingHistory> trackingHistoryRepository, TrackingHistoryRepository<TrackingSession> trackingSessionRepository, VehicleRepository<Vehicle> vehicleRepository)
+        public TrackingService(TrackingHistoryRepository<TrackingHistory> trackingHistoryRepository, TrackingHistoryRepository<TrackingSession> trackingSessionRepository, VehicleRepository<Vehicle> vehicleRepository, IGeoCodingService geoCodingService)
         {
             _trackingHistoryRepository = trackingHistoryRepository;
             _trackingSessionRepository = trackingSessionRepository;
             _vehicleRepository = vehicleRepository;
+            _geoCodingService = geoCodingService;
         }
 
         public async Task UpdateLocation(VehicleLocationRequest model)
@@ -58,7 +61,7 @@ namespace VehicleTracking.Service
             await _trackingHistoryRepository.SaveAsync();
         }
 
-        public async Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber)
+        public async Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber, bool isGetAddress)
         {
             var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == vehicleNumber && x.IsActive);
             if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, vehicleNumber);
@@ -72,12 +75,15 @@ namespace VehicleTracking.Service
             var location = session.TrackingHistories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
             if (location == null) throw new LocationNotFoundException(ErrorCode.E103, vehicleNumber);
 
+            var address = isGetAddress ? await _geoCodingService.ReverseGeoCoding(location.Lon, location.Lat) : null;
+
             return new VehicleLocationResponse()
             {
                 VehicleNumber = vehicleNumber,
                 Latitude = location.Lat,
                 Longitude = location.Lon,
-                LatestUpdate = location.CreatedDate
+                LatestUpdate = location.CreatedDate,
+                Address = address
             };
         }
 

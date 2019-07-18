@@ -6,7 +6,7 @@ namespace VehicleTracking.Service.Interface
     public interface ITrackingService
     {
         Task UpdateLocation(VehicleLocationRequest model);
-        Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber);
+        Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber, bool isGetAddress);
         Task<VehicleJourneyResponse> GetVehicleJourney(VehicleJourneyRequest model);
     }
 }

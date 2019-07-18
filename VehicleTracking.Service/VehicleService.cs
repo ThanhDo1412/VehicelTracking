@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using VehicleTracking.Data.CommonData;
 using VehicleTracking.Data.Exceptions;
-using VehicleTracking.Data.Helper;
 using VehicleTracking.Data.Model;
 using VehicleTracking.Data.Repository;
 using VehicleTracking.Data.Vehicle;
+using VehicleTracking.GateWay.GoogleGateway;
 using VehicleTracking.Service.Interface;
 
 namespace VehicleTracking.Service
