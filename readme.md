@@ -27,7 +27,7 @@ dotnet run --project ./VehicleTracking.WebApi/VehicleTracking.WebApi.csproj
   Finally, project is working. Enjoy it.
 
 ## API list
-Login API
+Login API - After get token from Login API, please add token to header: __authorization: Bearer {Token}__
 ```
 Method: POST
 Route: api/Login
