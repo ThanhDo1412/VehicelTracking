@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VehicleTracking.Data\VehicleTracking.Data.csproj" />
+    <ProjectReference Include="..\VehicleTracking.GateWay\VehicleTracking.GateWay.csproj" />
   </ItemGroup>
 
 </Project>

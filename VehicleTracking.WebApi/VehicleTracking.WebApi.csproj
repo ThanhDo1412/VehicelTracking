@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VehicleTracking.Data\VehicleTracking.Data.csproj" />
+    <ProjectReference Include="..\VehicleTracking.GateWay\VehicleTracking.GateWay.csproj" />
     <ProjectReference Include="..\VehicleTracking.Service\VehicleTracking.Service.csproj" />
   </ItemGroup>
 
