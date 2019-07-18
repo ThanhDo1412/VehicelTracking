@@ -5,7 +5,7 @@ This is the BackEnd platform of vehicle tracking. It's used for update current l
 
 ## Technical applied
 - Asp .Net Core web API
-- Identity4 for .Net Core
+- .NET Core Identity
 - Repository patten
 - Entity framework Code first
 
@@ -74,11 +74,13 @@ Method: GET
 Route: api/tracking/current/{vehicleNumber}
 Request:
   VehicleNumber - required
+  IsGetAddress - optional - true/false
 Response:
   VehicleNumber
   Longitude
   Latitude
   LatestUpdate
+  Address - will have data when IsGetAddress = true
 ```
 Get vehicle journey - (Admin Role)
 ```
@@ -97,21 +99,20 @@ Response:
   }
 ```
 ## Database Structure
-I had 2 database: Vehicle and trackingHistory  
-  - For Vehicle database: it's used for management data of system and identity user
-  - For TrackingHistory database: this database is used for tracking location of all vehicles. TrackingSessions table which will create 
-  new record per day for each vehicle, is index of each vehicle by date. When we want to find a journey of vehicle in period time, 
-  TrackingSessions like a filter that will be reduce the reading time and boost up the query so much than query directly in 
-  TrackingHistories. This database will be easy for scaling and relication without touch in to identity and orther datas.
+My database structure included 2 databases:
+  - For Vehicle database: it's used for managing data of system and identity user
+  - For TrackingHistory database: this database is used for tracking location of all vehicles. TrackingSessions table will create 
+  new record per day for each vehicle, it like index of tracking history for each vehicle. For example, when we want to find a journey of vehicle in period time, TrackingSessions like a filter that will reduce the reading time and boost the query up compare to query directly in TrackingHistories. This approach will give us the scalability and easier for replication without touching the identity and other data.
   
 ## Testing user  
   For testing purpose, I created 2 user:
   - Admin: admin@test.com/12345abc
   - Vehicle User: vehicle1@test.com/12345
+  Note for test: because I just used free api_key from Google, so that will limit request 10 times/day
   
 ## Future plane to improve
   - Writing UT
   - Apply Swagger for API Doc
   - Add/Edit more informations for User, Role, Vehicle
-  - Apply CIDC
+  - Apply CI/CD
   - Apply Docker
