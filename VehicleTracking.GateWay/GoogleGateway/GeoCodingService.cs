@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using VehicleTracking.GateWay.GoogleGateway;
 
 namespace VehicleTracking.Gateway.GoogleGateway
@@ -31,6 +31,12 @@ namespace VehicleTracking.Gateway.GoogleGateway
             var response = await SendAsync(HttpMethod.Get, url, content);
 
             var json = await response.Content.ReadAsStringAsync();
+            var objectConverted = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
+
+            if (objectConverted.ContainsKey("results") && objectConverted["results"][0] != null)
+            {
+                return objectConverted["results"][0].formatted_address;
+            }
 
             return "";
         }

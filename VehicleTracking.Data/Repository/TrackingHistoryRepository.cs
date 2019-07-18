@@ -17,24 +17,24 @@ namespace VehicleTracking.Data.Repository
             this.TrackingHistoryContext = trackingHistoryContext;
         }
 
-        public async Task<IEnumerable<T>> FindAllAsync()
+        public IQueryable<T> FindAll()
         {
-            return await this.TrackingHistoryContext.Set<T>().ToListAsync();
+            return this.TrackingHistoryContext.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return await this.TrackingHistoryContext.Set<T>().Where(expression).ToListAsync();
+            return this.TrackingHistoryContext.Set<T>().Where(expression);
         }
 
-        public async Task<T> FindOneByConditionAsync(Expression<Func<T, bool>> expression)
+        public T FindOneByCondition(Expression<Func<T, bool>> expression)
         {
-            return await this.TrackingHistoryContext.Set<T>().Where(expression).FirstOrDefaultAsync();
+            return this.TrackingHistoryContext.Set<T>().Where(expression).FirstOrDefault();
         }
 
-        public async Task<T> FindByIdAsync(int id)
+        public T FindById(int id)
         {
-            return await this.TrackingHistoryContext.Set<T>().FindAsync(id);
+            return this.TrackingHistoryContext.Set<T>().Find(id);
         }
 
         public void Create(T entity)

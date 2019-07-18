@@ -17,7 +17,7 @@ namespace VehicleTracking.Data.Model
                 throw new VehicleInvalidException(ErrorCode.E105);
             }
 
-            if (From <= To)
+            if (From >= To)
             {
                 throw new JourneyNotFoundException(ErrorCode.E106);
             }

@@ -37,8 +37,8 @@ namespace VehicleTracking.WebApi.Middleware
             {
                 //Custom error showing to user
                 case CustomException e:
-                    response = JsonConvert.SerializeObject(e);
-                    Log.Error("Error Code: {@ErrorCode} with Message: {@ErrorMessage}", e.ErrorCode, e.ErrorMessage);
+                    response = JsonConvert.SerializeObject(new { e.ErrorCode, e.ErrorMessage});
+                    Log.Error(e, "Error Code: {@ErrorCode} with Message: {@ErrorMessage}", e.ErrorCode, e.ErrorMessage);
                     break;
                 //Exception by system
                 default:
@@ -52,9 +52,10 @@ namespace VehicleTracking.WebApi.Middleware
                         currentException = currentException.InnerException;
                     }
 
-                    response = JsonConvert.SerializeObject(new CustomException(ErrorCode.E500));
+                    var returnError = new CustomException(ErrorCode.E500);
+                    response = JsonConvert.SerializeObject(new { returnError.ErrorCode, returnError.ErrorMessage });
 
-                    Log.Error("Error: {@Message} with StackTrace: {@sb}", exception.Message, sb.ToString());
+                    Log.Error(exception, "Error: {@Message} with StackTrace: {@sb}", exception.Message, sb.ToString());
                     break;
             }
             context.Response.ContentType = "application/json";

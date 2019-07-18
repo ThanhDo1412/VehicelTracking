@@ -12,16 +12,16 @@ namespace VehicleTracking.Service
 {
     public class VehicleService : IVehicleService
     {
-        private readonly VehicleRepository<Vehicle> _vehicleRepository;
+        private readonly IReponsitory<Vehicle> _vehicleRepository;
 
-        public VehicleService(VehicleRepository<Vehicle> vehicleRepository)
+        public VehicleService(IReponsitory<Vehicle> vehicleRepository)
         {
             _vehicleRepository = vehicleRepository;
         }
 
         public async Task AddVehicle(VehicleRequest model)
         {
-            var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == model.VehicleNumber);
+            var vehicle = _vehicleRepository.FindOneByCondition(x => x.VehicleNumber == model.VehicleNumber);
 
             //Vehicle already existed
             if (vehicle != null)
@@ -50,7 +50,7 @@ namespace VehicleTracking.Service
 
         public async Task RemoveVehicle(string vehicleNumber)
         {
-            var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == vehicleNumber && x.IsActive);
+            var vehicle = _vehicleRepository.FindOneByCondition(x => x.VehicleNumber == vehicleNumber && x.IsActive);
             if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, vehicleNumber);
 
             vehicle.IsActive = false;

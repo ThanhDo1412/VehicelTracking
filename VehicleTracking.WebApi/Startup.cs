@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using VehicleTracking.Data.Vehicle;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using VehicleTracking.Data;
 using VehicleTracking.Data.Repository;
@@ -53,14 +54,15 @@ namespace VehicleTracking.WebApi
                     cfg.Password.RequiredUniqueChars = 0;
                 })
                 .AddEntityFrameworkStores<VehicleContext>();
+            
+            services.AddScoped<IReponsitory<Vehicle>, VehicleRepository<Vehicle>>();
+            services.AddScoped<IReponsitory<TrackingHistory>, TrackingHistoryRepository<TrackingHistory>>();
+            services.AddScoped<IReponsitory<TrackingSession>, TrackingHistoryRepository<TrackingSession>>();
 
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IVehicleService, VehicleService>();
             services.AddTransient<ITrackingService, TrackingService>();
             services.AddTransient<IGeoCodingService, GeoCodingService>();
-
-            services.AddScoped(typeof(IReponsitory<>), typeof(VehicleRepository<>));
-            services.AddScoped(typeof(IReponsitory<>), typeof(TrackingHistoryRepository<>));
 
             //Configuration for token 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

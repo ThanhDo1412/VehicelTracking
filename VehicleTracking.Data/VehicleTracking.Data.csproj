@@ -13,6 +13,7 @@
     <Compile Remove="Migrations\20190716101727_init-VehicleContext.cs" />
     <Compile Remove="Migrations\20190716101727_init-VehicleContext.Designer.cs" />
     <Compile Remove="Migrations\TrackingHistory\20190715142906_init-TrackingHistoryContext.cs" />
+    <Compile Remove="Migrations\TrackingHistory\20190718142325_update-datatype-lonlat.cs" />
   </ItemGroup>
 
   <ItemGroup>

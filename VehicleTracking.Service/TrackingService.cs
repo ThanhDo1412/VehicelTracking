@@ -15,12 +15,12 @@ namespace VehicleTracking.Service
 {
     public class TrackingService : ITrackingService
     {
-        private readonly TrackingHistoryRepository<TrackingHistory> _trackingHistoryRepository;
-        private readonly TrackingHistoryRepository<TrackingSession> _trackingSessionRepository;
-        private readonly VehicleRepository<Vehicle> _vehicleRepository;
+        private readonly IReponsitory<TrackingHistory> _trackingHistoryRepository;
+        private readonly IReponsitory<TrackingSession> _trackingSessionRepository;
+        private readonly IReponsitory<Vehicle> _vehicleRepository;
         private readonly IGeoCodingService _geoCodingService;
 
-        public TrackingService(TrackingHistoryRepository<TrackingHistory> trackingHistoryRepository, TrackingHistoryRepository<TrackingSession> trackingSessionRepository, VehicleRepository<Vehicle> vehicleRepository, IGeoCodingService geoCodingService)
+        public TrackingService(IReponsitory<TrackingHistory> trackingHistoryRepository, IReponsitory<TrackingSession> trackingSessionRepository, IReponsitory<Vehicle> vehicleRepository, IGeoCodingService geoCodingService)
         {
             _trackingHistoryRepository = trackingHistoryRepository;
             _trackingSessionRepository = trackingSessionRepository;
@@ -30,11 +30,11 @@ namespace VehicleTracking.Service
 
         public async Task UpdateLocation(VehicleLocationRequest model)
         {
-            var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
+            var vehicle = _vehicleRepository.FindOneByCondition(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
             if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, model.VehicleNumber);
 
             //Check session was created or not
-            var session = await _trackingSessionRepository.FindOneByConditionAsync(x =>
+            var session = _trackingSessionRepository.FindOneByCondition(x =>
                 x.CreatedDate >= DateTime.UtcNow.Date
                 && x.VehicleId == vehicle.Id);
             if (session == null)
@@ -63,16 +63,14 @@ namespace VehicleTracking.Service
 
         public async Task<VehicleLocationResponse> GetCurrentLocation(string vehicleNumber, bool isGetAddress)
         {
-            var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == vehicleNumber && x.IsActive);
+            var vehicle = _vehicleRepository.FindOneByCondition(x => x.VehicleNumber == vehicleNumber && x.IsActive);
             if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, vehicleNumber);
 
-            //Get latest session
-            var session = (await _trackingSessionRepository.FindByConditionAsync(x => x.VehicleId == vehicle.Id))
+            //Get latest position depend on session
+            var location = _trackingSessionRepository.FindByCondition(x => x.VehicleId == vehicle.Id)
+                .OrderByDescending(x => x.CreatedDate).SelectMany(x => x.TrackingHistories)
                 .OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-            if (session == null) throw new LocationNotFoundException(ErrorCode.E103, vehicleNumber);
-
-            //Get latest position depend on this session
-            var location = session.TrackingHistories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+          
             if (location == null) throw new LocationNotFoundException(ErrorCode.E103, vehicleNumber);
 
             var address = isGetAddress ? await _geoCodingService.ReverseGeoCoding(location.Lon, location.Lat) : null;
@@ -87,32 +85,25 @@ namespace VehicleTracking.Service
             };
         }
 
-        public async Task<VehicleJourneyResponse> GetVehicleJourney(VehicleJourneyRequest model)
+        public VehicleJourneyResponse GetVehicleJourney(VehicleJourneyRequest model)
         {
-            var vehicle = await _vehicleRepository.FindOneByConditionAsync(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
+            var vehicle = _vehicleRepository.FindOneByCondition(x => x.VehicleNumber == model.VehicleNumber && x.IsActive);
             if (vehicle == null) throw new VehicleNotFoundException(ErrorCode.E102, model.VehicleNumber);
 
-            //Get sessions
-            var sessions = await _trackingSessionRepository.FindByConditionAsync(x =>
-                x.VehicleId == vehicle.Id
-                && x.CreatedDate >= model.From
-                && x.CreatedDate <= model.To);
-            if (!sessions.Any()) throw new JourneyNotFoundException(ErrorCode.E104, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
+            //Get latest position depend on session
+            var locations = _trackingSessionRepository.FindByCondition(x =>
+                    x.VehicleId == vehicle.Id
+                    && x.CreatedDate >= model.From
+                    && x.CreatedDate <= model.To)
+                .SelectMany(x => x.TrackingHistories)
+                .Where(x => x.CreatedDate >= model.From && x.CreatedDate <= model.To)
+                .Select(x => new LocationBase
+                {
+                    Latitude = x.Lat,
+                    Longitude = x.Lon,
+                    LatestUpdate = x.CreatedDate
+                });
 
-            //Get latest position depend on this session
-            var locations = new List<LocationBase>();
-            foreach (var session in sessions)
-            {
-                var listLocation = session.TrackingHistories
-                    .Where(x => x.CreatedDate >= model.From && x.CreatedDate <= model.To)
-                    .Select(x => new LocationBase
-                    {
-                        Latitude = x.Lat,
-                        Longitude = x.Lon,
-                        LatestUpdate = x.CreatedDate
-                    });
-                locations.AddRange(listLocation);
-            }
             if (!locations.Any()) throw new JourneyNotFoundException(ErrorCode.E104, model.VehicleNumber, model.From.ToString("G"), model.To.ToString("G"));
 
             return new VehicleJourneyResponse()

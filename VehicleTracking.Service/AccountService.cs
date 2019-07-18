@@ -33,7 +33,7 @@ namespace VehicleTracking.Service
 
         public async Task<string> LogIn(LoginRequest model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null) throw new UserNotFoundException(ErrorCode.E001);
 
