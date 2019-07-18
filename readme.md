@@ -27,7 +27,7 @@ dotnet run --project ./VehicleTracking.WebApi/VehicleTracking.WebApi.csproj
   Finally, project is working. Enjoy it.
 
 ## API list
-Login API
+Login API - After get token from Login API, please add token to header: __authorization: Bearer {Token}__
 ```
 Method: POST
 Route: api/Login
@@ -107,7 +107,8 @@ My database structure included 2 databases:
 ## Testing user  
   For testing purpose, I created 2 user:
   - Admin: admin@test.com/12345abc
-  - Vehicle User: vehicle1@test.com/12345
+  - Vehicle User: vehicle1@test.com/12345  
+  
   Note for test: because I just used free api_key from Google, so that will limit request 10 times/day
   
 ## Future plane to improve
